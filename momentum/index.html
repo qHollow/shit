@@ -4,17 +4,40 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css" />
-  <title>momentum</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/owfont-regular.css">
+  <link rel="stylesheet" href="css/style.css" />
+  <title>Momentum</title>
 </head>
 <body>
-  <time class="time"></time>
-  <h1>
-    <span class="greeting"></span>
-    <span class="name" contenteditable="true"></span>
-  </h1>
-  <h2>What Is Your Focus For Today?</h2>
-  <h2 class="focus" contenteditable="true"></h2>
+  <aside class="aside">
+    <div class="weather">
+      <div class="city" contenteditable="true">Москва</div>
+      <i class="weather-icon owf"></i>
+      <div class="weather-info">
+        <div class="temperature weather-info-box"></div>
+        <div class="temperature-feels weather-info-box"></div>
+        <div class="humidity weather-info-box"></div>
+        <div class="wind weather-info-box"></div>
+      </div>
+      <div class="weather-description"></div>
+    </div>
+    <div class="random-quote">
+      <div class="quote"></div>
+      <div class="author">via kanye.rest</div>
+      <button type="button" class="refresh-quote">Другая цитата</button>
+    </div>
+  </aside>
+  <main class="main">
+    <span class="date"></span>
+    <time class="time"></time>
+    <h1>
+      <span class="greeting"></span>
+      <span class="name" contenteditable="true"></span>
+    </h1>
+    <h2>What Is Your Focus For Today?</h2>
+    <h2 class="focus" contenteditable="true"></h2>
+  </main>
   <script src="script.js"></script>
 </body>
 </html>
