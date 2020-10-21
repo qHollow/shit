@@ -5,7 +5,7 @@
 }
 
 body{
-  color: #000000;
+  color: white;
   display: flex;
   background-repeat: no-repeat;
   margin: 0px;
@@ -14,8 +14,6 @@ body{
   background-size: cover;
   background-position: center center;
   transition: background-image 1s ease-in-out;
-  background-color: url('../assets/images/overlay.png');
-  color: white;
 }
 
 .main {
