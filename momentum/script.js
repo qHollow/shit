@@ -6,6 +6,7 @@ const focus = document.querySelector('.focus');
 const date = document.querySelector('.date');
 const quote = document.querySelector('.quote');
 const button = document.querySelector('.refresh-quote');
+const next = document.querySelector('.next');
 
 //weather
 const weatherIcon = document.querySelector('.weather-icon');
@@ -16,13 +17,15 @@ const humidity = document.querySelector('.humidity');
 const weatherDescription = document.querySelector('.weather-description');
 const city = document.querySelector('.city');
 
-//
+//TODO: Доделать текст при наборе, дезигн
 
 // let day = 0, evening = 0, morning = 0, night = 0;
 const week = ['Sunday', 'Monday', 'Thusday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-
-// const link = `https://api.openweathermap.org/data/2.5/weather?q=Минск&lang=ru&appid=427dfe181598834fa6f0f50641863a4f&units=metric`
+let img = [];
+let iter = 1;
+let prevHour;
+let partOfDay;
 
 
 //Show time
@@ -31,13 +34,18 @@ function showTime() {
   let hour = today.getHours();
   let min = today.getMinutes();
   let sec = today.getSeconds();
-  //let amPM = hour >= 12 ? 'PM' : 'AM';
-  // return hour;
-  //AM or PM
-
-  //hour = hour % 12 || 12;
-  // hour = 24;
   time.innerHTML = `${addZero(hour)}:${addZero(min)}:${addZero(sec)}`;
+  //test for bci
+  if(prevHour !== min){
+    prevHour = min;
+    if(iter < img.length){
+      iter += 1;
+    }
+    else{
+      iter = 1;
+    }
+    setBgGreet();
+  }
   setTimeout(showTime, 1000);
 }
 
@@ -55,30 +63,27 @@ function setDate(){
 
 
 function setBgGreet() {
-  let today = new Date();
-  let hours = today.getHours();
-  let partOfDay;
-  // hours = 7;
+  let hours = new Date().getHours();
   if(hours > 6 && hours < 12){
     //Morning
     greeting.textContent = 'Good morning, ';
     partOfDay = 'morning';
     console.log(partOfDay);
-    document.body.style.backgroundImage = `url('../assets/images/morning/03.jpg')`;
+    document.body.style.backgroundImage = img[hours];
   }
   else if(hours > 12 && hours < 18){
     //Afternoon
     greeting.textContent = 'Good afternoon, ';
     partOfDay = 'day'; 
     console.log(partOfDay);
-    document.body.style.backgroundImage = `url('../assets/images/day/03.jpg')`;
+    document.body.style.backgroundImage = img[hours];
   }
   else if(hours > 18 && hours < 24){
     //Evening
     greeting.textContent = 'Good evening, ';
     partOfDay = 'evening';
     console.log(partOfDay);
-    document.body.style.backgroundImage = `url('../assets/images/evening/03.jpg')`;
+    document.body.style.backgroundImage = img[hours];
   }
   else{
     //Night
@@ -86,12 +91,32 @@ function setBgGreet() {
     partOfDay = 'night';
     console.log(partOfDay);
     document.body.style.color = 'white';
-    document.body.style.backgroundImage = `url('../assets/images/night/03.jpg')`;
+    console.log("Night");
+    document.body.style.backgroundImage = img[hours];
   }
 }
 
-function getImg(n){
-
+function fillArray(){
+  for(let i = 0; i < 24; i++){
+    img[i] = Math.floor(1 + Math.random() * (19 + 1 - 1));
+  }
+  img = img.map((item, i) => {
+    if(i >= 6 && i < 12){
+      return `url('../assets/images/morning/${addZero(img[i])}.jpg')`
+    }
+    else if (i >= 12 && i < 18){
+      return `url('../assets/images/day/${addZero(img[i])}.jpg')`
+    }
+    else if(i >= 18 && i < 24){
+      return `url('../assets/images/evening/${addZero(img[i])}.jpg')`
+    }
+    else{
+      return `url('../assets/images/night/${addZero(img[i])}.jpg')`
+    }
+  });
+  // prevHour = new Date().getHours();
+  prevHour = new Date().getMinutes();
+  console.log(prevHour);
 }
 
 function getName() {
@@ -136,6 +161,17 @@ function setFocus(e){
   }
 }
 
+function nextImage(){
+  if(iter < img.length-1){
+    iter += 1;
+  }
+  else{
+    iter = 1;
+  }
+  // iter += 1;
+  document.body.style.backgroundImage = img[iter];
+  console.log(iter);
+}
 
 //Получить цитату
 async function getQuote() {  
@@ -155,7 +191,7 @@ async function getWeather() {
   weatherIcon.classList.add(`owf-${data.weather[0].id}`);
   temperature.textContent = `${data.main.temp.toFixed(0)}°C`;
   wind.textContent = data.wind.speed.toFixed(1) + `m/s`;
-  feels.textContent = `${data.main.feels_like.toFixed(0)}°C`;
+  feels.textContent = `${data.main.pressure}`;
   humidity.textContent = data.main.humidity;
   weatherDescription.textContent = data.weather[0].description;
 }
@@ -175,9 +211,11 @@ name.addEventListener('blur', setName);
 focus.addEventListener('keypress', setFocus);
 focus.addEventListener('blur', setFocus);
 button.addEventListener('click', getQuote);
+next.addEventListener('click', nextImage);
 
 
 //Run
+fillArray();
 showTime();
 setBgGreet();
 getName();
