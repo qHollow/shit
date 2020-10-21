@@ -7,6 +7,8 @@ const date = document.querySelector('.date');
 const quote = document.querySelector('.quote');
 const button = document.querySelector('.refresh-quote');
 const next = document.querySelector('.next');
+const bg = document.createElement('img');
+const body = document.querySelector('body');
 
 //weather
 const weatherIcon = document.querySelector('.weather-icon');
@@ -23,7 +25,7 @@ const city = document.querySelector('.city');
 const week = ['Sunday', 'Monday', 'Thusday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 let img = [];
-let iter = 1;
+let iter = 0;
 let prevHour;
 
 
@@ -35,8 +37,8 @@ function showTime() {
   let sec = today.getSeconds();
   time.innerHTML = `${addZero(hour)}:${addZero(min)}:${addZero(sec)}`;
   //test for bci
-  if(prevHour !== min){
-    prevHour = min;
+  if(prevHour !== hour){
+    prevHour = hour;
     if(iter < img.length){
       iter += 1;
     }
@@ -63,25 +65,25 @@ function setDate(){
 
 function setBgGreet() {
   let hours = new Date().getHours();
+  bg.src = img[hours];
+  bg.onload = () => {
+    body.style.backgroundImage = `url(${bg.src})`;
+  }
   if(hours >= 6 && hours < 12){
     //Morning
     greeting.textContent = 'Good morning, ';
-    document.body.style.backgroundImage = img[hours];
   }
   else if(hours >= 12 && hours < 18){
     //Afternoon
     greeting.textContent = 'Good afternoon, ';
-    document.body.style.backgroundImage = img[hours];
   }
   else if(hours >= 18 && hours < 24){
     //Evening
     greeting.textContent = 'Good evening, ';
-    document.body.style.backgroundImage = img[hours];
   }
   else{
     //Night
     greeting.textContent = 'Good night, ';
-    document.body.style.backgroundImage = img[hours];
   }
 }
 
@@ -91,20 +93,21 @@ function fillArray(){
   }
   img = img.map((item, i) => {
     if(i >= 6 && i < 12){
-      return `url('../assets/images/morning/${addZero(img[i])}.jpg')`
+      return `/assets/images/morning/${addZero(img[i])}.jpg`
     }
     else if (i >= 12 && i < 18){
-      return `url('../assets/images/day/${addZero(img[i])}.jpg')`
+      return `/assets/images/day/${addZero(img[i])}.jpg`
     }
     else if(i >= 18 && i < 24){
-      return `url('../assets/images/evening/${addZero(img[i])}.jpg')`
+      return `/assets/images/evening/${addZero(img[i])}.jpg`
     }
     else{
-      return `url('../assets/images/night/${addZero(img[i])}.jpg')`
+      return `/assets/images/night/${addZero(img[i])}.jpg`
     }
   });
-  // prevHour = new Date().getHours();
-  prevHour = new Date().getMinutes();
+  prevHour = new Date().getHours();
+  // prevHour = new Date().getMinutes();
+  iter = prevHour;
 }
 
 function getName() {
@@ -150,15 +153,19 @@ function setFocus(e){
 }
 
 function nextImage(){
+  next.disabled = true;
   if(iter < img.length-1){
     iter += 1;
   }
   else{
-    iter = 1;
+    iter = 0;
   }
-  // iter += 1;
-  document.body.style.backgroundImage = img[iter];
-  console.log(iter);
+  bg.src = img[iter];
+  bg.onload = () => {
+    console.log("asdasdasdasd");
+    body.style.backgroundImage = `url(${bg.src})`;
+    setTimeout(function() { next.disabled = false }, 1000);
+  }
 }
 
 //Получить цитату
@@ -174,7 +181,7 @@ async function getWeather() {
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${city.textContent}&lang=ru&appid=427dfe181598834fa6f0f50641863a4f&units=metric`;
   const res = await fetch(url);
   const data = await res.json();
-  if(data.cod === "404"){
+  if(data.cod !== "200"){
     return alert(`Error: ${data.message}!`);
   }
   
