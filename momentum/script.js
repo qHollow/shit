@@ -25,7 +25,6 @@ const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 
 let img = [];
 let iter = 1;
 let prevHour;
-let partOfDay;
 
 
 //Show time
@@ -64,34 +63,24 @@ function setDate(){
 
 function setBgGreet() {
   let hours = new Date().getHours();
-  if(hours > 6 && hours < 12){
+  if(hours >= 6 && hours < 12){
     //Morning
     greeting.textContent = 'Good morning, ';
-    partOfDay = 'morning';
-    console.log(partOfDay);
     document.body.style.backgroundImage = img[hours];
   }
-  else if(hours > 12 && hours < 18){
+  else if(hours >= 12 && hours < 18){
     //Afternoon
     greeting.textContent = 'Good afternoon, ';
-    partOfDay = 'day'; 
-    console.log(partOfDay);
     document.body.style.backgroundImage = img[hours];
   }
-  else if(hours > 18 && hours < 24){
+  else if(hours >= 18 && hours < 24){
     //Evening
     greeting.textContent = 'Good evening, ';
-    partOfDay = 'evening';
-    console.log(partOfDay);
     document.body.style.backgroundImage = img[hours];
   }
   else{
     //Night
     greeting.textContent = 'Good night, ';
-    partOfDay = 'night';
-    console.log(partOfDay);
-    document.body.style.color = 'white';
-    console.log("Night");
     document.body.style.backgroundImage = img[hours];
   }
 }
@@ -116,7 +105,6 @@ function fillArray(){
   });
   // prevHour = new Date().getHours();
   prevHour = new Date().getMinutes();
-  console.log(prevHour);
 }
 
 function getName() {
@@ -175,10 +163,10 @@ function nextImage(){
 
 //Получить цитату
 async function getQuote() {  
-  const url = `https://api.kanye.rest/`;
+  const url = `https://api.adviceslip.com/advice`;
   const res = await fetch(url);
   const data = await res.json(); 
-  quote.textContent = data.quote;
+  quote.textContent = data.slip.advice;
 }
 
 //weather
@@ -186,6 +174,9 @@ async function getWeather() {
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${city.textContent}&lang=ru&appid=427dfe181598834fa6f0f50641863a4f&units=metric`;
   const res = await fetch(url);
   const data = await res.json();
+  if(data.cod === "404"){
+    return alert(`Error: ${data.message}!`);
+  }
   
   weatherIcon.className = 'weather-icon owf';
   weatherIcon.classList.add(`owf-${data.weather[0].id}`);

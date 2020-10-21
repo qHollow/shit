@@ -14,6 +14,8 @@ body{
   background-size: cover;
   background-position: center center;
   transition: background-image 1s ease-in-out;
+  background-color: url('../assets/images/overlay.png');
+  color: white;
 }
 
 .main {
@@ -23,8 +25,6 @@ body{
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  
-  /* background-size: 50%; */
 }
 
 .date{
@@ -78,14 +78,16 @@ h2 {
 }
 
 .weather-info-box{
-  font-size: 30px;
-  margin-right: 10px;
-  width: 100px;
+  font-size: 25px;
+  margin-right: 5px;
+  width: 115px;
   display: flex;
   justify-content: center;
   align-items: center;
-  /* border: 1px solid red; */
-  /* margin-bottom: 40px; */
+}
+
+.weather-info-box:last-child{
+  margin-right: 0;
 }
 
 .weather-info-box:nth-child(3), .weather-info-box:nth-child(4){
@@ -96,7 +98,8 @@ h2 {
   content: "";
   width: 36px;
   height: 36px;
-  /* fill: #4f4fe3; */
+  margin-right: 10px;
+  background-repeat: no-repeat;
   background-image: url(/assets/icons/thermometer.svg);
 }
 
@@ -105,6 +108,8 @@ h2 {
   width: 36px;
   height: 36px;
   /* fill: #4f4fe3; */
+  margin-right: 10px;
+  background-repeat: no-repeat;
   background-image: url(/assets/icons/gauge.svg);
 }
 
@@ -113,6 +118,8 @@ h2 {
   width: 36px;
   height: 36px;
   /* fill: #4f4fe3; */
+  margin-right: 10px;
+  background-repeat: no-repeat;
   background-image: url(/assets/icons/humidity.svg);
 }
 
@@ -120,6 +127,7 @@ h2 {
   content: "";
   width: 36px;
   height: 36px;
+  margin-top: 10px;
   /* fill: #4f4fe3; */
   background-repeat: no-repeat;
   background-image: url(/assets/icons/wind.svg);
@@ -139,11 +147,12 @@ h2 {
   display: flex;
   flex-direction: column;
   margin-top: 100px;
-  padding: 10px;
+  /* padding: 10px; */
+  width: 600px;
 }
 
 .quote{
-  
+  height: 40px;
 }
 
 .author{
@@ -151,5 +160,31 @@ h2 {
 }
 
 .refresh-quote{
-  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: none;
+}
+
+.refresh-quote:hover{
+  background-color: lightgrey;
+}
+
+.footer{
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.next{
+  border: 0;
+  background: transparent;
+}
+
+.next:hover{
+  cursor: pointer;
 }
