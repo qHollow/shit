@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/owfont-regular.css">
+  <link rel="stylesheet" href="css/style.css" />
+  <title>Momentum</title>
+</head>
+<body>
+  <aside class="aside">
+    <div class="weather">
+      <div class="city" contenteditable="true">Москва</div>
+      <i class="weather-icon owf"></i>
+      <div class="weather-info">
+        <div class="temperature weather-info-box"></div>
+        <div class="temperature-feels weather-info-box"></div>
+        <div class="humidity weather-info-box"></div>
+        <div class="wind weather-info-box"></div>
+      </div>
+      <div class="weather-description"></div>
+    </div>
+  </aside>
+  <main class="main">
+    <span class="date"></span>
+    <time class="time"></time>
+    <h1>
+      <span class="greeting"></span>
+      <span class="name" contenteditable="true"></span>
+    </h1>
+    <h2>What Is Your Focus For Today?</h2>
+    <h2 class="focus" contenteditable="true"></h2>
+    <div class="random-quote">
+      <div class="quote"></div>
+      <div class="author">via adviceslip.com</div>
+      <button type="button" class="refresh-quote"><img src="./assets/icons/refresh-24px.svg" alt=""></button>
+    </div>
+    <div class="footer">
+      <button type="button" class="next"><img src="./assets/icons/navigate_next-24px.svg" alt="" width="40px" height="40px"></button>
+    </div>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>
