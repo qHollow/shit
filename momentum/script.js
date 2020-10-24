@@ -27,7 +27,7 @@ const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 
 let img = [];
 let iter = 0;
 let prevHour;
-
+let pressed = true;
 
 //Show time
 function showTime() {
@@ -128,27 +128,53 @@ function getFocus() {
   }
 }
 
-function setName(e){
-  if(e.type === 'keypress'){
-    if(e.wich == 13 || e.keyCode == 13){
-      localStorage.setItem('name', e.target.innerText);
-      name.blur();
+function setName(event){
+  if(event.type === 'keypress'){
+    if(pressed){
+      event.target.innerText = '';
+      pressed = false;
     }
   }
-  else{
-    localStorage.setItem('name', e.target.innerText);
+  if (event.code === 'Enter') {
+    name.blur();
+  }
+  if(event.type === 'blur'){
+    pressed = true;
+    if(event.target.innerText !== ''){
+      localStorage.setItem('name', event.target.innerText);
+    }
+    else{
+      name.textContent = localStorage.name;
+    }
+  }
+  if(event.type === 'click'){
+    localStorage.setItem('name', event.target.innerText);
+    event.target.innerText = '';
   }
 }
 
-function setFocus(e){
-  if(e.type === 'keypress'){
-    if(e.wich == 13 || e.keyCode == 13){
-      localStorage.setItem('focus', e.target.innerText);
-      focus.blur();
+function setFocus(event){
+  if(event.type === 'keypress'){
+    if(pressed){
+      event.target.innerText = '';
+      pressed = false;
     }
   }
-  else{
-    localStorage.setItem('focus', e.target.innerText);
+  if (event.code === 'Enter') {
+    focus.blur();
+  }
+  if(event.type === 'blur'){
+    pressed = true;
+    if(event.target.innerText !== ''){
+      localStorage.setItem('focus', event.target.innerText);
+    }
+    else{
+      focus.textContent = localStorage.focus;
+    }
+  }
+  if(event.type === 'click'){
+    localStorage.setItem('focus', event.target.innerText);
+    event.target.innerText = '';
   }
 }
 
@@ -162,7 +188,6 @@ function nextImage(){
   }
   bg.src = img[iter];
   bg.onload = () => {
-    console.log("asdasdasdasd");
     body.style.backgroundImage = `url(${bg.src})`;
     setTimeout(function() { next.disabled = false }, 1000);
   }
@@ -181,7 +206,7 @@ async function getWeather() {
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${city.textContent}&lang=ru&appid=427dfe181598834fa6f0f50641863a4f&units=metric`;
   const res = await fetch(url);
   const data = await res.json();
-  if(data.cod !== "200"){
+  if(data.cod === "404"){
     return alert(`Error: ${data.message}!`);
   }
   
@@ -195,19 +220,47 @@ async function getWeather() {
 }
 
 function setCity(event) {
+  if(event.type === 'keypress'){
+    if(pressed){
+      event.target.innerText = '';
+      pressed = false;
+    }
+  }
   if (event.code === 'Enter') {
+    if(event.target.innerText === ''){
+      city.blur();
+    }
     getWeather();
     city.blur();
+  }
+  if(event.type === 'blur'){
+    pressed = true;
+    if(event.target.innerText !== ''){
+      localStorage.setItem('city', event.target.innerText);
+    }
+    else{
+      city.textContent = localStorage.city;
+    }
+  }
+  if(event.type === 'click'){
+    localStorage.setItem('city', event.target.innerText);
+    event.target.innerText = '';
   }
 }
 
 document.addEventListener('DOMContentLoaded', getWeather);
 city.addEventListener('keypress', setCity);
+city.addEventListener('click', setCity);
+city.addEventListener('blur', setCity);
 
+name.addEventListener('click', setName);
 name.addEventListener('keypress', setName);
 name.addEventListener('blur', setName);
+
 focus.addEventListener('keypress', setFocus);
 focus.addEventListener('blur', setFocus);
+focus.addEventListener('click', setFocus);
+
 button.addEventListener('click', getQuote);
 next.addEventListener('click', nextImage);
 
@@ -220,4 +273,5 @@ getName();
 getFocus();
 setDate();
 getQuote();
+// setCity('');
 getWeather();
