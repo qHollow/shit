@@ -19,9 +19,7 @@ const humidity = document.querySelector('.humidity');
 const weatherDescription = document.querySelector('.weather-description');
 const city = document.querySelector('.city');
 
-//TODO: Доделать текст при наборе, дезигн
 
-// let day = 0, evening = 0, morning = 0, night = 0;
 const week = ['Sunday', 'Monday', 'Thusday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 let img = [];
@@ -106,7 +104,6 @@ function fillArray(){
     }
   });
   prevHour = new Date().getHours();
-  // prevHour = new Date().getMinutes();
   iter = prevHour;
 }
 
@@ -248,6 +245,15 @@ function setCity(event) {
   }
 }
 
+function setCityOnStart(){
+  if(localStorage.getItem('city') === null){
+    city.textContent = 'Москва';
+  }
+  else{
+    city.textContent = localStorage.getItem('city');
+  }
+}
+
 document.addEventListener('DOMContentLoaded', getWeather);
 city.addEventListener('keypress', setCity);
 city.addEventListener('click', setCity);
@@ -267,11 +273,13 @@ next.addEventListener('click', nextImage);
 
 //Run
 fillArray();
+setCityOnStart();
 showTime();
 setBgGreet();
 getName();
 getFocus();
 setDate();
 getQuote();
-// setCity('');
 getWeather();
+
+console.log("Hello! No adaptive. Contacts: t.me/road2grave");
