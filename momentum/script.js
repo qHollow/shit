@@ -245,6 +245,15 @@ function setCity(event) {
   }
 }
 
+function setCityOnStart(){
+  if(localStorage.getItem('city') === null){
+    city.textContent = 'Москва';
+  }
+  else{
+    city.textContent = localStorage.getItem('city');
+  }
+}
+
 document.addEventListener('DOMContentLoaded', getWeather);
 city.addEventListener('keypress', setCity);
 city.addEventListener('click', setCity);
@@ -264,6 +273,7 @@ next.addEventListener('click', nextImage);
 
 //Run
 fillArray();
+setCityOnStart();
 showTime();
 setBgGreet();
 getName();
@@ -271,3 +281,5 @@ getFocus();
 setDate();
 getQuote();
 getWeather();
+
+console.log("Hello! No adaptive. Contacts: t.me/road2grave");
